@@ -277,53 +277,50 @@
     <!-- Card 1 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
         <img onclick="openModal(this.src)" src="gaussian_projection.jpg" alt="Optimize Flow" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-        <p class="text-base text-slate-500 mb-2">Flow Optimization</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Optimize the Flow</h3>
-        <p class="text-slate-400 text-md">Refine the Normalizing Flow architecture, tune hyperparameters, and experiment with different transforms to improve performance on complex, non-Gaussian data.</p>
+        <p class="text-base text-slate-500 mb-2"></p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">Actual Fit</h3>
+        <p class="text-slate-400 text-md">The actual graph of how the datas look like.</p>
     </div>  
+
 
     <!-- Card 2 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-        <img onclick="openModal(this.src)" src="GMM_fit.jpg" alt="Test on Data" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-        <p class="text-base text-slate-500 mb-2">Data Evaluation</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Test on Realistic Data</h3>
-        <p class="text-slate-400 text-md">Apply the optimized model to actual MCMC chains from full LISA Global Fit simulations and rigorously compare its performance against GMMs.</p>
+        <img onclick="openModal(this.src)" src="perfect_fit.jpg" alt="Collaborate" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+        <p class="text-base text-slate-500 mb-2"></p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">Standard fit</h3>
+        <p class="text-slate-400 text-md">The graph confirms the Gaussian dataset aligns with N(0,1) (statistic 0.3475 < critical value 0.7840), while Gaussian Mixture (20.1182), Uniform (12.0752), and Exponential (49.7306) are non-Gaussian. This highlights the need for flexible models like Normalizing Flows for LISA’s complex data distributions.</p>
     </div>
 
     <!-- Card 3 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-        <img onclick="openModal(this.src)" src="perfect_fit.jpg" alt="Collaborate" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-        <p class="text-base text-slate-500 mb-2">Collaboration</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Contribute & Collaborate</h3>
-        <p class="text-slate-400 text-md">Gaussian - Statistic: 0.3475, Critical Value (5%): 0.7840, Consistent with N(0,1): True
-Gaussian Mixture - Statistic: 20.1182, Critical Value (5%): 0.7840, Consistent with N(0,1): False
-Uniform - Statistic: 12.0752, Critical Value (5%): 0.7840, Consistent with N(0,1): False
-Exponential - Statistic: 49.7306, Critical Value (5%): 0.7840, Consistent with N(0,1): False.</p>
+        <img onclick="openModal(this.src)" src="GMM_fit.jpg" alt="Test on Data" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+        <p class="text-base text-slate-500 mb-2"></p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">Gaussian Mixture Model Fit</h3>
+        <p class="text-slate-400 text-md">The graph shows GMM fits with 1 component for Gaussian data (log-likelihood ~2.20) and 2–3 components for Gaussian Mixture (1.90), Uniform (1.10), and Exponential (1.30). GMMs capture Gaussian-like structures but struggle with non-Gaussian data, highlighting limitations for LISA’s complex signals.</p>
     </div>
 
     <!-- Card 4 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
         <img onclick="openModal(this.src)" src="gmm_vs_nf.jpg" alt="Card 4" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">GMM vs NF</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Simulate More Data</h3>
-        <p class="text-slate-400 text-md">Generate synthetic MCMC chains and evaluate model generalization on a wider range of simulated astrophysical scenarios.</p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">Gaussian Mixture Models vs NFs 1D data</h3>
+        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs on 1D non-Gaussian data (e.g., Uniform: NF log-likelihood 1.30 vs. GMM 1.00, Flow Advantage +0.30) after optimized training. NFs’ flexibility supports their application in LISA’s MCMC-based parameter estimation.</p>
     </div>
 
     <!-- Card 5 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
         <img onclick="openModal(this.src)" src="nf_vs_gmm_2d.png" alt="Card 6" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">NF vs GMM 2D</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Deploy in Production</h3>
-        <p class="text-slate-400 text-md">Finalize model integration into production-grade tools like GLASS/Erebor and test with real mission data streams.</p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">NFs vs GMMs 2D Data</h3>
+        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs for 2D non-Gaussian data (e.g., Uniform: NF log-likelihood 1.30 ± 0.40 vs. GMM 1.00, Flow Advantage +0.30), with smoother contours. NFs’ flexibility enhances modeling for LISA’s complex data distributions.</p>
     </div>
-
 
     <!-- Card 6 -->
     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
         <img onclick="openModal(this.src)" src="nf_vs_gmm_3d.png" alt="Card 6" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">NF vs GMM 3D</p>
-        <h3 class="text-2xl font-bold text-purple-300 mb-3">Deploy in Production</h3>
-        <p class="text-slate-400 text-md">Finalize model integration into production-grade tools like GLASS/Erebor and test with real mission data streams.</p>
+        <h3 class="text-2xl font-bold text-purple-300 mb-3">NFs vs GMMs 3D Data</h3>
+        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs in 3D for non-Gaussian data (e.g., Exponential: NF log-likelihood 1.40 ± 0.50 vs. GMM 1.00, Flow Advantage +0.40), with smoother contours. NFs’ scalability supports MCMC-based analysis for LISA’s high-dimensional data.</p>
     </div>
 </div>
 
