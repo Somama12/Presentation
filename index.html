@@ -279,7 +279,7 @@
         <img onclick="openModal(this.src)" src="gaussian_projection.jpg" alt="Optimize Flow" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2"></p>
         <h3 class="text-2xl font-bold text-purple-300 mb-3">Actual Fit</h3>
-        <p class="text-slate-400 text-md">The actual graph of how the datas look like.</p>
+        <p class="text-slate-400 text-md">The actual graph of how the data look like.</p>
     </div>  
 
 
@@ -304,7 +304,7 @@
         <img onclick="openModal(this.src)" src="gmm_vs_nf.jpg" alt="Card 4" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">GMM vs NF</p>
         <h3 class="text-2xl font-bold text-purple-300 mb-3">Gaussian Mixture Models vs NFs 1D data</h3>
-        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs on 1D non-Gaussian data (e.g., Uniform: NF log-likelihood 1.30 vs. GMM 1.00, Flow Advantage +0.30) after optimized training. NFs’ flexibility supports their application in LISA’s MCMC-based parameter estimation.</p>
+        <p class="text-slate-400 text-md">The graph shows NFs not outperforming GMMs on 1D non-Gaussian data (e.g., Gaussian Mixture - Flow LL (mean ± std): -1.4242 ± 0.0449, GMM LL: -1.2886, Flow Advantage: -0.1356) after optimized training.</p>
     </div>
 
     <!-- Card 5 -->
@@ -312,7 +312,7 @@
         <img onclick="openModal(this.src)" src="nf_vs_gmm_2d.png" alt="Card 6" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">NF vs GMM 2D</p>
         <h3 class="text-2xl font-bold text-purple-300 mb-3">NFs vs GMMs 2D Data</h3>
-        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs for 2D non-Gaussian data (e.g., Uniform: NF log-likelihood 1.30 ± 0.40 vs. GMM 1.00, Flow Advantage +0.30), with smoother contours. NFs’ flexibility enhances modeling for LISA’s complex data distributions.</p>
+        <p class="text-slate-400 text-md">The graph shows NFs still not outperforming GMMs for 2D non-Gaussian data ( Gaussian Mixture - Flow LL: -2.5813 ± 0.1604, GMM LL: -2.3733, Flow Advantage: -0.2080, GMM Components: 2), with smoother contours.</p>
     </div>
 
     <!-- Card 6 -->
@@ -320,7 +320,7 @@
         <img onclick="openModal(this.src)" src="nf_vs_gmm_3d.png" alt="Card 6" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
         <p class="text-base text-slate-500 mb-2">NF vs GMM 3D</p>
         <h3 class="text-2xl font-bold text-purple-300 mb-3">NFs vs GMMs 3D Data</h3>
-        <p class="text-slate-400 text-md">The graph shows NFs outperforming GMMs in 3D for non-Gaussian data (e.g., Exponential: NF log-likelihood 1.40 ± 0.50 vs. GMM 1.00, Flow Advantage +0.40), with smoother contours. NFs’ scalability supports MCMC-based analysis for LISA’s high-dimensional data.</p>
+        <p class="text-slate-400 text-md">The graph shows NFs still not outperforming GMMs in 3D for non-Gaussian data (Gaussian Mixture - Flow LL: -8.1994 ± 4.7496, GMM LL: -3.3478, Flow Advantage: -4.8516, GMM Components:2 ), with smoother contours.</p>
     </div>
 </div>
 
