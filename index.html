@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@700&display=stylesheet">
 </head>
 <body>
     <header id="header" class="glassmorphism fixed top-0 left-0 right-0 z-50">
@@ -22,7 +22,6 @@
                 <a href="#hero" class="nav-link active">Home</a>
                 <a href="#challenge" class="nav-link">The Challenge</a>
                 <a href="#model-comparison" class="nav-link">Model Comparison</a>
-                <a href="#comparison" class="nav-link">Comparison</a>
                 <a href="#kl-comparison" class="nav-link">KL Comparison</a>
                 <a href="#future" class="nav-link">Future Work</a>
             </div>
@@ -105,10 +104,74 @@
                         </div>
                     </div>
                 </div>
+                <div class="mt-16 bg-slate-800 p-8 rounded-xl glassmorphism">
+                    <h3 class="glow text-3xl lg:text-4xl font-bold text-purple-300 mb-6 text-center">Modeling the Cosmic Data: GMM vs. Normalizing Flows</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-xl font-semibold text-white mb-2">Gaussian Mixture Models (GMMs)</h4>
+                            <p class="text-slate-300 mb-4">
+                                Gaussian Mixture Models (GMMs) represent data as a combination of multiple Gaussian distributions, each with its own mean, covariance, and weight. They are widely used to model complex probability distributions by approximating them as a mixture of Gaussian "blobs."
+                                <br/><br/>
+                                <strong>How it Works:</strong> GMMs optimize the parameters of each Gaussian component to maximize the likelihood of the observed data. For LISA, GMMs model the parameter distributions of gravitational wave sources, assuming the data can be approximated by summing weighted Gaussians.
+                                <br/><br/>
+                                <strong>Limitations:</strong> GMMs struggle with non-Gaussian distributions, such as those with curved, elongated, or multimodal shapes (e.g., Banana distributions), which are common in LISA data. They also require pre-specifying the number of components, which can be difficult for complex datasets.
+                            </p>
+                            <h4 class="text-xl font-semibold text-white mb-2">Normalizing Flows (NFs)</h4>
+                            <p class="text-slate-300 mb-4">
+                                Normalizing Flows (NFs) are generative models that transform a simple base distribution (e.g., a standard Gaussian) into a complex target distribution using a series of invertible, differentiable transformations. This makes them highly flexible for modeling LISA’s data.
+                                <br/><br/>
+                                <strong>How it Works:</strong> NFs learn a sequence of bijective functions that map the data to a base distribution and back. By training on data, NFs can capture intricate, non-Gaussian distributions, such as those with multimodal or non-linear structures.
+                                <br/><br/>
+                                <strong>Why NFs are Better:</strong> Unlike GMMs, NFs do not assume a specific distribution shape, allowing them to model complex, non-Gaussian data more accurately. They excel at capturing the curved and multimodal distributions typical in gravitational wave data, enabling better sampling and faster convergence in analyses.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="w-full max-w-md mx-auto h-64 md:h-80 glassmorphism rounded-xl p-4 flex items-center justify-center">
+                                <canvas id="nf-gmm-canvas"></canvas>
+                            </div>
+                            <h4 class="text-xl font-semibold text-white mt-6 mb-2">Visualizing the Difference</h4>
+                            <p class="text-slate-300">
+                                The animation below shows a 2D Banana distribution (orange points) being modeled by a GMM (blue contours) and an NF (purple contours). GMMs approximate the data with Gaussian components, often missing curved structures. NFs use flexible transformations to closely follow the data’s shape, demonstrating superior adaptability.
+                                <br/><br/>
+                                <button id="toggle-animation" class="btn btn-primary px-6 py-2 rounded-full font-bold text-md">Toggle Animation</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Section: Understanding KL Divergence -->
+                <div class="mt-16 bg-slate-800 p-8 rounded-xl glassmorphism">
+                    <h3 class="glow text-3xl lg:text-4xl font-bold text-purple-300 mb-6 text-center">Understanding KL Divergence</h3>
+                    <div class="text-content text-slate-300">
+                        <p class="mb-4">
+                            <strong>Kullback-Leibler (KL) Divergence</strong> measures how much one probability distribution differs from another. It quantifies how well a model’s distribution (e.g., GMM or NF) matches a target distribution.
+                        </p>
+                        <p class="mb-4">
+                            <strong>Formula:</strong>
+                            <div class="math-block">
+                                \[ D_{\text{KL}}(P || Q) = \int P(x) \log \left( \frac{P(x)}{Q(x)} \right) dx \]
+                            </div>
+                            Here, \( P(x) \) is the true distribution, and \( Q(x) \) is the model’s distribution. For discrete data:
+                            <div class="math-block">
+                                \[ D_{\text{KL}}(P || Q) = \sum_i P(x_i) \log \left( \frac{P(x_i)}{Q(x_i)} \right) \]
+                            </div>
+                        </p>
+                        <p class="mb-4">
+                            <strong>What It Compares:</strong> In our tests, KL Divergence compares the true data distribution (e.g., 2D–5D Gaussian or Banana datasets) to distributions modeled by GMMs or NFs. Lower scores mean a better match.
+                        </p>
+                        <p class="mb-4">
+                            <strong>Score Interpretation:</strong>
+                            <ul class="list-disc list-inside ml-4">
+                                <li><strong>Low (< 0.1):</strong> Excellent fit (e.g., GMM on 5D Gaussian: 0.0067).</li>
+                                <li><strong>Moderate (0.1–0.5):</strong> Decent fit, some mismatches (e.g., NF on 5D Banana: 0.0393).</li>
+                                <li><strong>High (> 0.5):</strong> Poor fit, significant differences (e.g., GMM on 2D Banana: 1.4573).</li>
+                            </ul>
+                            NFs often achieve lower scores on non-Gaussian data (e.g., 0.0393 vs. GMM’s 0.3928 on 5D Banana), showing better flexibility.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Updated Model Comparison Section -->
         <section id="model-comparison" class="py-20 md:py-24">
             <div class="container mx-auto px-6 max-w-4xl">
                 <div class="text-content text-center">
@@ -118,89 +181,61 @@
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-                    <!-- 2D GMM Card -->
                     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="2d_gmm.png" alt="GMM fit on 2D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">2D GMM Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">2D Gaussian Mixture Model</h3>
+                        <img onclick="openModal(this.src)" src="2d.png" alt="GMM and NF fit on 2D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+                        <p class="text-base text-slate-500 mb-2">2D Results</p>
+                        <h3 class="text-2xl font-bold text-purple-300 mb-3">2D Data</h3>
                         <p class="text-slate-400 text-md">
-                            GMM on 2D data shows strong performance on Gaussian data (Avg KL: 0.1130, X: 0.1155, Y: 0.1106) but struggles with Banana data (Avg KL: 0.4508, X: 0.4265, Y: 0.4752), indicating limitations in capturing non-Gaussian structures.
+                            GMM on 2D data shows strong performance on Gaussian data (KL: 0.0204) but struggles with Banana data (KL: 1.4573). NF performs moderately on Gaussian (KL: 0.3726) and better on Banana (KL: 1.1247), indicating improved adaptability to non-Gaussian structures.
                         </p>
                     </div>
-                    <!-- 2D NF Card -->
                     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="2d_flows.png" alt="NF fit on 2D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">2D NF Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">2D Normalizing Flows</h3>
+                        <img onclick="openModal(this.src)" src="3d.png" alt="GMM and NF fit on 3D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+                        <p class="text-base text-slate-500 mb-2">3D Results</p>
+                        <h3 class="text-2xl font-bold text-purple-300 mb-3">3D Data</h3>
                         <p class="text-slate-400 text-md">
-                            NF on 2D data performs well on Gaussian data (Avg KL: 0.1381, X: 0.1216, Y: 0.1547) and excels on Banana data (Avg KL: 0.2491, X: 0.3141, Y: 0.1840), showing better adaptability to non-Gaussian distributions.
+                            GMM on 3D data excels on Gaussian data (KL: 0.0000) but has moderate performance on Banana data (KL: 0.6176). NF struggles with Gaussian (KL: 0.7346) but outperforms GMM on Banana (KL: 0.5438), showing robustness for non-Gaussian data.
                         </p>
                     </div>
-                    <!-- 3D GMM Card -->
                     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="3d_gmm.png" alt="GMM fit on 3D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">3D GMM Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">3D Gaussian Mixture Model</h3>
+                        <img onclick="openModal(this.src)" src="4d.png" alt="GMM and NF fit on 4D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+                        <p class="text-base text-slate-500 mb-2">4D Results</p>
+                        <h3 class="text-2xl font-bold text-purple-300 mb-3">4D Data</h3>
                         <p class="text-slate-400 text-md">
-                            GMM on 3D data excels on Gaussian data (Avg KL: 0.0583, X: 0.0648, Y: 0.0443, Z: 0.0658) but has moderate performance on Banana data (Avg KL: 0.1874, X: 0.2783, Y: 0.2351, Z: 0.0489), reflecting challenges with complex distributions.
+                            GMM on 4D data shows excellent fit for Gaussian data (KL: 0.0000) but weaker performance on Banana data (KL: 0.4025). NF underperforms on Gaussian (KL: 0.5977) but excels on Banana (KL: 0.2612), highlighting its strength in non-Gaussian distributions.
                         </p>
                     </div>
-                    <!-- 3D NF Card -->
                     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="3d_flows.png" alt="NF fit on 3D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">3D NF Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">3D Normalizing Flows</h3>
+                        <img onclick="openModal(this.src)" src="5d.png" alt="GMM and NF fit on 5D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
+                        <p class="text-base text-slate-500 mb-2">5D Results</p>
+                        <h3 class="text-2xl font-bold text-purple-300 mb-3">5D Data</h3>
                         <p class="text-slate-400 text-md">
-                            NF on 3D data struggles with Gaussian data (Avg KL: 0.2798, X: 0.2223, Y: 0.2223, Z: 0.3947) but performs well on Banana data (Avg KL: 0.1149, X: 0.1392, Y: 0.1127, Z: 0.0928), demonstrating robustness for non-Gaussian data.
-                        </p>
-                    </div>
-                    <!-- 4D GMM Card -->
-                    <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="4d_gmm.png" alt="GMM fit on 4D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">4D GMM Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">4D Gaussian Mixture Model</h3>
-                        <p class="text-slate-400 text-md">
-                            GMM on 4D data shows excellent fit for Gaussian data (Avg KL: 0.0264, X: 0.0319, Y: 0.0290, Z: 0.0294, W: 0.0154) but weaker performance on Banana data (Avg KL: 0.1290, X: 0.1131, Y: 0.3001, Z: 0.0399, W: 0.0628).
-                        </p>
-                    </div>
-                    <!-- 4D NF Card -->
-                    <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="4d_flows.png" alt="NF fit on 4D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">4D NF Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">4D Normalizing Flows</h3>
-                        <p class="text-slate-400 text-md">
-                            NF on 4D data underperforms on Gaussian data (Avg KL: 0.4146, X: 0.3943, Y: 0.4765, Z: 0.4624, W: 0.3251) but excels on Banana data (Avg KL: 0.0703, X: 0.1009, Y: 0.0998, Z: 0.0075, W: 0.0728).
-                        </p>
-                    </div>
-                    <!-- 5D GMM Card -->
-                    <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="5d_gmm.png" alt="GMM fit on 5D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">5D GMM Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">5D Gaussian Mixture Model</h3>
-                        <p class="text-slate-400 text-md">
-                            GMM on 5D data achieves near-perfect fit for Gaussian data (Avg KL: 0.0013, X: 0.0010, Y: 0.0015, Z: 0.0014, W: 0.0015, V: 0.0011) but struggles on Banana data (Avg KL: 0.0416, X: 0.0824, Y: 0.1143, Z: 0.0038, W: 0.0039, V: 0.0034).
-                        </p>
-                    </div>
-                    <!-- 5D NF Card -->
-                    <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
-                        <img onclick="openModal(this.src)" src="5d_flows.png" alt="NF fit on 5D dataset" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
-                        <p class="text-base text-slate-500 mb-2">5D NF Results</p>
-                        <h3 class="text-2xl font-bold text-purple-300 mb-3">5D Normalizing Flows</h3>
-                        <p class="text-slate-400 text-md">
-                            NF on 5D data shows moderate performance on Gaussian data (Avg KL: 0.0771, X: 0.0451, Y: 0.0841, Z: 0.0849, W: 0.0843, V: 0.0869) and strong performance on Banana data (Avg KL: 0.0417, X: 0.0786, Y: 0.0775, Z: 0.0038, W: 0.0041, V: 0.0445).
+                            GMM on 5D data achieves near-perfect fit for Gaussian data (KL: 0.0067) but struggles on Banana data (KL: 0.3928). NF shows moderate performance on Gaussian (KL: 0.3326) and excels on Banana (KL: 0.0393), demonstrating superior flexibility.
                         </p>
                     </div>
                 </div>
+                <div id="imgModal" onclick="closeModal()" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50">
+                    <span onclick="closeModal()" class="absolute top-5 right-5 text-white text-3xl cursor-pointer">&times;</span>
+                    <img id="modalImg" onclick="event.stopPropagation()" class="max-w-full max-h-full rounded-lg shadow-xl">
+                </div>
+                <script>
+                    function openModal(src) {
+                        document.getElementById('imgModal').style.display = 'flex';
+                        document.getElementById('modalImg').src = src;
+                    }
+                    function closeModal() {
+                        document.getElementById('imgModal').style.display = 'none';
+                    }
+                </script>
             </div>
         </section>
 
-         <!-- New KL Comparison Section -->
         <section id="kl-comparison" class="py-20 md:py-24">
             <div class="container mx-auto px-6 max-w-4xl">
                 <div class="text-content text-center">
                     <h2 class="glow text-4xl lg:text-5xl font-bold text-white mb-4">KL Divergence Comparison</h2>
                     <p class="text-lg text-slate-300 mb-12">
-                        Compare the average KL divergence scores for GMM and Normalizing Flows across 2D to 5D datasets for Gaussian and Non-Gaussian (Banana) distributions, highlighting model performance trends.
+                        Compare the KL divergence scores for GMM and Normalizing Flows across 2D to 5D datasets for Gaussian and Non-Gaussian (Banana) distributions, highlighting model performance trends.
                     </p>
                 </div>
                 <div class="chart-container glassmorphism rounded-xl p-4">
@@ -209,8 +244,6 @@
             </div>
         </section>
 
-
-        <!-- Original Comparison Section (Unchanged) -->
         <section id="comparison" class="py-20 md:py-24">
             <div class="container mx-auto px-6 max-w-4xl">
                 <div class="text-content text-center">
@@ -223,7 +256,7 @@
                         <p class="text-base text-slate-500 mb-2"></p>
                         <h3 class="text-2xl font-bold text-purple-300 mb-3">Actual Fit</h3>
                         <p class="text-slate-400 text-md">The actual graph of how the data look like.</p>
-                    </div>  
+                    </div>
                     <div class="glassmorphism p-8 min-h-[420px] rounded-2xl flex flex-col items-center">
                         <img onclick="openModal(this.src)" src="perfect_fit.jpg" alt="Collaborate" class="cursor-pointer mb-4 w-32 h-32 object-contain rounded-xl shadow-lg transition-transform duration-200 hover:scale-105">
                         <p class="text-base text-slate-500 mb-2"></p>
@@ -255,12 +288,10 @@
                         <p class="text-slate-400 text-md">The graph shows NFs still not outperforming GMMs in 3D for non-Gaussian data (Gaussian Mixture - Flow LL: -8.1994 ± 4.7496, GMM LL: -3.3478, Flow Advantage: -4.8516, GMM Components:2 ), with smoother contours.</p>
                     </div>
                 </div>
-                <!-- Modal for Image Zoom -->
                 <div id="imgModal" onclick="closeModal()" class="fixed inset-0 bg-black bg-opacity-80 hidden justify-center items-center z-50">
                     <span onclick="closeModal()" class="absolute top-5 right-5 text-white text-3xl cursor-pointer">&times;</span>
                     <img id="modalImg" onclick="event.stopPropagation()" class="max-w-full max-h-full rounded-lg shadow-xl">
                 </div>
-                <!-- Script for Image Modal -->
                 <script>
                     function openModal(src) {
                         document.getElementById('imgModal').style.display = 'flex';
@@ -273,8 +304,6 @@
             </div>
         </section>
 
-       
-        <!-- Future Work Section -->
         <section id="future" class="py-20 md:py-24">
             <div class="container mx-auto px-6 max-w-4xl">
                 <div class="text-content text-center">
